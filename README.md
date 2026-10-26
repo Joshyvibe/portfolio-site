@@ -53,7 +53,7 @@ commit the result.
 
 ## SEO & link previews
 
-The site is set up for `https://joshyvibe.allformslimited.com/`:
+The site is set up for `https://joshyvibe.midi8.app/`:
 
 - `index.html` head: title, description, canonical URL, Open Graph + X card tags,
   and JSON-LD (Person + WebSite) so search engines know who the site is about.
@@ -61,7 +61,7 @@ The site is set up for `https://joshyvibe.allformslimited.com/`:
 - `robots.txt`, `sitemap.xml`, `site.webmanifest`, and icons in `assets/`
   (`favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192/512.png`).
 
-If the domain changes, replace `https://joshyvibe.allformslimited.com/` in
+If the domain changes, replace `https://joshyvibe.midi8.app/` in
 `index.html`, `robots.txt` and `sitemap.xml` (search and replace all three).
 After going live, submit `sitemap.xml` in Google Search Console and check the share
 card with LinkedIn's Post Inspector and an X post preview.

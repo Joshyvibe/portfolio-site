@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://joshyvibe.allformslimited.com/sitemap.xml
+Sitemap: https://joshyvibe.midi8.app/sitemap.xml
