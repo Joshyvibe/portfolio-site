@@ -403,6 +403,7 @@
     cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"/></svg>',
     kanban: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16M6 9h0M6 13h0M12 8h0M12 12h0M12 16h0M18 9h0M18 15h0"/></svg>',
     ticket: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 0 0 4v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2a2 2 0 0 1 0-4V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/><path d="M13 5v2M13 17v2M13 10.5v3"/></svg>',
+    shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>',
   };
 
   const projects = [
@@ -520,6 +521,28 @@
         "<strong>Two independent expiry paths.</strong> A Redis keyspace-notification listener is the fast path; an APScheduler sweep every ~30s is the backstop for anything a dropped notification missed. Both verified live, independently.",
         "<strong>Fails loudly, on purpose.</strong> <code>POST /api/holds</code> returns a clean 503 on a Redis outage rather than selling without the atomicity guarantee the whole project exists to demonstrate.",
         "<strong>Found and fixed live:</strong> Redis's default persistence was silently surviving a container restart, which defeated the \"Redis is disposable, Postgres is truth\" premise the resync recovery path depends on — disabled persistence so a restart means what the design says it means.",
+      ],
+    },
+    {
+      status: "Case study 06 · LLM pipeline + review",
+      title: "ListingGuard — Marketplace Counterfeit Detection",
+      tagline:
+        "Finds a brand's listings on Jumia and eBay, has an LLM validate what each one actually is, and routes it: dismissed, sent to a person for review, or ready to report with a drafted takedown notice.",
+      hardPart:
+        "A similar name is not a counterfeit. The pipeline has to tell a fake Nike from a different brand called NIKER — and never file a takedown against a legitimate seller on its own.",
+      proof:
+        "On a live Jumia run the first version opened 8 counterfeit cases, all for the separate brand NIKER. A validation step cut that to 1 — routed to human review, not filed — and cost per 1,000 listings fell from $1.80 to $0.83. That NIKER listing is now a regression test.",
+      stack: ["FastAPI", "SQLAlchemy 2.0 (async)", "pydantic-ai", "Playwright", "Celery", "Redis", "PostgreSQL", "Langfuse"],
+      repo: "https://github.com/joshyvibe/listingguard",
+      live: null,
+      image: "assets/projects/listingguard.png",
+      icon: ICONS.shield,
+      accent: "#c084fc",
+      details: [
+        "<strong>Validate before scoring.</strong> The LLM returns a typed <code>Verdict</code> — classification (counterfeit, look-alike, legitimate use, noise, ambiguous), confidence and product type — before any rule runs. Price floors are per product type, and price and logo evidence only count when a listing claims to be the brand: a different brand is expected to be cheaper and logo-free.",
+        "<strong>People decide the hard calls.</strong> Only a clear, high-confidence counterfeit is ready to report on its own; look-alike marks and ambiguous listings go to a review queue. Cases move through a strict transition table with an audited history, and the takedown draft is a template filled from stored evidence — never LLM-written, never submitted automatically.",
+        "<strong>A staged fan-out/fan-in on Celery.</strong> Platform searches run in parallel, then one analysis task per listing, then a finalize step. Tasks are idempotent with <code>acks_late</code>, so a worker killed mid-run redelivers without duplicating rows.",
+        "<strong>Cost and evidence you can audit.</strong> Vision runs only where it can change the outcome; every LLM call is traced in self-hosted Langfuse with tokens, cost and prompt version; a read-only tool-calling agent answers multi-turn questions over the cases. eBay is read through its official API rather than scraped.",
       ],
     },
   ];
@@ -693,6 +716,7 @@
       ["digital-marketplace", "Digital Marketplace", "One cart, many vendors, Stripe Connect payouts that never double-process.", "Payments · Stripe Connect"],
       ["realtime-kanban", "Realtime Kanban", "Two people move the same card at once — exactly one write wins, visibly.", "Realtime · WebSockets"],
       ["venue-ticketing", "Venue Ticketing", "Concurrent buyers racing for the last ticket can never oversell it.", "Concurrency · Payments"],
+      ["listingguard", "ListingGuard", "Tells a fake Nike from a different brand called NIKER, and leaves the hard calls to a person.", "AI · LLM pipeline"],
     ].map(([slug, title, line, tags], i) => {
       const p = projects[i];
       return {
