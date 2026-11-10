@@ -23,6 +23,9 @@ Then open `http://localhost:4173`.
 - **Social links and booking**: `SOCIAL_LINKS` at the top of `script.js` holds the
   X profile and the Google Calendar booking page.
 - **Résumé**: replace `assets/Obinna_Akpulonu_Resume.pdf`.
+- **Open-source contributions**: the `oss-card` articles under the GitHub card
+  in `index.html` (Skills section). Copy one `<article class="oss-card">` per
+  merged PR, newest first.
 
 ## Your photo
 

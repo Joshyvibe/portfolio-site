@@ -642,6 +642,21 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .gh-card.is-live .gh-cell { animation: gh-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-delay: calc(var(--w) * 14ms); }
 @keyframes gh-pop { to { opacity: 1; scale: 1; } }
 
+/* Open-source contributions: merged PRs in other people's repos, under the GitHub card. */
+.oss-block { margin-top: 40px; }
+.oss-card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elevated); padding: 18px 20px; }
+.oss-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.oss-repo { font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); }
+.oss-repo:hover { color: var(--accent-strong); }
+.oss-meta { display: flex; align-items: center; gap: 8px; }
+.oss-title { margin: 14px 0 8px; font-size: 1.05rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+.oss-title a { color: var(--text); }
+.oss-title a:hover { color: var(--accent-strong); }
+.oss-card code { font-family: var(--font-mono); font-size: 0.92em; color: var(--text); background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+.oss-body { color: var(--text-dim); font-size: 15px; line-height: 1.6; }
+.oss-foot { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border-soft); }
+.oss-link { margin-left: auto; }
+
 .gh-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding-top: 10px; font-size: 12px; color: var(--text-faint); }
 .gh-legend { display: inline-flex; align-items: center; gap: 3px; font-family: var(--font-mono); font-size: 10.5px; }
 .gh-legend i { --cell: 10px; display: inline-block; }
